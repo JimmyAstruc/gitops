@@ -1,5 +1,5 @@
 apiVersion: v3
-name: traefik
+name: hashicorp
 
 type: application
 
@@ -13,10 +13,10 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 appVersion: "1.0"
 dependencies:
-- name: traefik
-  condition: traefik.enabled
-  version: 30.0.2
-  repository: https://traefik.github.io/charts
+- name: vault
+  condition: hashicorp.enabled
+  version: 0.28.1
+  repository: https://helm.releases.hashicorp.com
   tags:
-    - v30.0.2
-    - traefik
+    - v0.28.1
+    - hashicorp

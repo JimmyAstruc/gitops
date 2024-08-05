@@ -1,0 +1,9 @@
+# Enable traefik for all clusters
+vault:
+  enabled: true
+# Disable tags, they should be enabled in cluster's values
+tags:
+  - v0.28.1: false
+ingressRoute:
+  dashboard:
+    enabled: true
