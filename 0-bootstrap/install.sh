@@ -8,3 +8,5 @@ helm install argocd argo/argo-cd -v 20 --version 7.3.11  \
     --namespace argocd --create-namespace \
     --values ${0%/*}/argocd/values.yaml \
     --values ${0%/*}/argocd/minikube/values.yaml
+
+kubectl apply -f ${0%/*}/argocd/minikube/local-cluster-secret.yaml
