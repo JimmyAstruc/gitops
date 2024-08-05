@@ -14,9 +14,9 @@ version: 0.1.0
 appVersion: "1.0"
 dependencies:
 - name: vault
-  condition: hashicorp.enabled
+  condition: vault.enabled
   version: 0.28.1
   repository: https://helm.releases.hashicorp.com
   tags:
     - v0.28.1
-    - hashicorp
+    - vault
