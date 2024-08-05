@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infrastructure-apps
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - matrix:
+        generators:
+          - matrix:
+              generators:
+                # For all defined clusters
+                - clusters: {}
+                # A git file generator
+                - git:
+                    repoURL: https://github.com/JimmyAstruc/gitops.git
+                    revision: HEAD
+                    files:
+                    # Find all configuration files;
+                    - path: '3-infrastructure/**/config.json'
+                    values:
+                      # Search in config.json clusters.${name}.enabled
+                      enabled: '{{ dig "clusters" .name "enabled" false .}}'
+          - list:
+              elements: 
+                - installEnabled: '{{ dig "clusters" .name "enabled" false .}}'
+      selector:
+        matchLabels:
+          # deploy only when the app  is enabled for the cluster
+          installEnabled: 'true'
+  template:
+    metadata:
+      name: '{{ .name }}-{{ .path.basename }}'
+    spec:
+      project: 'default'
+      sources:
+        - repoURL: https://github.com/JimmyAstruc/gitops.git
+          targetRevision: HEAD
+          path: '{{ .path.path }}'
+          helm:
+            valueFiles:
+              - 'values.yaml'
+              - '{{ .name }}/values.yaml'
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+      destination:
+        server: '{{.server}}'
+        namespace: '{{ .destination.namespace }}'

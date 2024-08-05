@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: infrastructure-projects
+  namespace: argocd
+spec:
+  description: Technical applications that run in the cluster such as proxy, auto scaler or databases
+  sourceRepos:
+  - 'https://github.com/JimmyAstruc/gitops.git'
+  destinations:
+  - namespace: 'default'
+    server: '*'
+  - namespace: 'infrastructure'
+    server: '*'
+  - namespace: 'argocd'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
